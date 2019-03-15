@@ -12,17 +12,11 @@ class SearchTableViewController: UITableViewController{
     var resultArray = [ResultItems]()
     
     //Constants
-    var movieName: String = ""
+    var movie: String = ""
     let APIKey: String = "f7128111cfbf8f7d2850e8ba64058948"
     let movieURL: String = "https://api.themoviedb.org/3/search/movie?api_key="
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("SearchHistory.plist")
     
-    
-    //Mark: Instance Variables
-    
-    
-    
-    //Pre-linked IBOutlets
     
     
     
@@ -30,18 +24,12 @@ class SearchTableViewController: UITableViewController{
         super.viewDidLoad()
         
         
+        tableView.delegate = self
+        
 //        loadItems()
         
         
     }
-    
-    
-    
-    //MARK: Search function
-    /***************************************************************/
-    
-
-    
     
     //MARK: Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,17 +54,21 @@ class SearchTableViewController: UITableViewController{
     }
     
     
-    
-    
     //MARK: TableView Delegate Mothods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if let movieName = self.tableView.cellForRow(at: indexPath)?.textLabel?.text {
+            getMovieData(name: movieName)
+            
+        } else {
+            print("Error empty cell")
+        }
+        
+        
         
         
     }
-    
-    
     
     
     //MARK: Networking
@@ -93,45 +85,51 @@ class SearchTableViewController: UITableViewController{
         
         let url: String = makeURL(MovieName: name)
         
-                Alamofire.request(url,method: .get).responseJSON{
-                    response in
-                    if response.result.isSuccess {
-                        print("Success!Got the Movie data")
-                        var item = QueryItems()
-                        item.text = name
-                        self.itemArray.append(item)
+        Alamofire.request(url,method: .get).responseJSON{
+            response in
+            if response.result.isSuccess {
+                print("Success!Got the Movie data")
+                var item = QueryItems()
+                item.text = name
+                self.itemArray.append(item)
+                
+                let movieJSON: JSON = JSON(response.result.value!)
+                updateMovieData(json: movieJSON)
+                
+            } else {
+                print("Error \(String(describing: response.result.error))")
+                
+                let connectionAlert = UIAlertController(title: "Connection Issue", message: "Please Check Your Internet Connection", preferredStyle: .alert)
+                
+                let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                
+                connectionAlert.addAction(alertAction)
+                
+                self.present(connectionAlert, animated: true, completion: nil)
+            }
+            
+            saveItems()
+            
+        }
         
-                        let movieJSON: JSON = JSON(response.result.value!)
-                        print(movieJSON)
-                        updateMovieData(json: movieJSON)
-                    } else {
-                        print("Error \(String(describing: response.result.error))")
-                        print("Connection Issue")
-                        //TODO: Make Alert For Connection Issue
-                    }
         
-        saveItems()
         
-    }
-    
-    
         
-    
-    
-    
-    
-    
-    
-    
-    //MARK: - JSON Parsing
-    /***************************************************************/
-    
-    
-    //We parse our Recieved Json here and update uiTableview cell to show our result
-    func updateMovieData(json: JSON){
         
-        let resultItem = ResultItems()
         
+        
+        
+        
+        
+        //MARK: - JSON Parsing
+        /***************************************************************/
+        
+        
+        //We parse our Recieved Json here and update uiTableview cell to show our result
+        func updateMovieData(json: JSON){
+            
+            let resultItem = ResultItems()
+            
             for i in 0 ..< 20{
                 let jsonItem = json["results"][i]
                 
@@ -145,100 +143,87 @@ class SearchTableViewController: UITableViewController{
                 
                 resultArray.append(resultItem)
             }
-        }
-    
-    
-    
-    
-    //MARK: - UI Updates
-    /***************************************************************/
-    
-    
-    //MARK: Finall Result
-    func updateUIWithFinallResult(){
-        //        cityLabel.text = wetherDataModel.city
-        //        temperatureLabel.text = "\(wetherDataModel.temperature)°"
-        //        weatherIcon.image = UIImage(named: wetherDataModel.weatherIconName)
-        
-    }
-    //MARK:
-    
-    
-    
-    
-
-    
-    
-    
-    //MARK: - Change Movie Delegate methods
-    /***************************************************************/
-    func userEnteredANewMovieName(movie: String) {
-        
-        //        let params: [String : String] = ["q" : city, "appid" : APP_ID]
-        //        getMovieData(url: WEATHER_URL, parameters: params)
-        
-    }
-    
-    //Write the userEnteredANewCityName Delegate method here:
-    
-    
-    //MARK: Model Manupulation Method
-    
-    
-    func saveItems(){
-        
-        let encoder = PropertyListEncoder()
-        do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
-        } catch {
-            print("Error Encoding itemArray, \(error)")
+            
+            performSegue(withIdentifier: "SearchSegue", sender: nil)
         }
         
-        tableView.reloadData()
         
-    }
-    
-    func loadItems(){
         
-        if let data = try? Data(contentsOf: dataFilePath!){
-        let decoder = PropertyListDecoder()
-        do {
-            itemArray = try decoder.decode([QueryItems].self, from: data)
-        } catch {
-            print("Error decoding item array,\(error)")
+        
+        //MARK: - UI Updates
+        /***************************************************************/
+        
+        
+        
+        
+        //MARK: - Change Movie Delegate methods
+        /***************************************************************/
+        func userEnteredANewMovieName(movie: String) {
+            
+            //        let params: [String : String] = ["q" : city, "appid" : APP_ID]
+            //        getMovieData(url: WEATHER_URL, parameters: params)
+            
         }
         
+        //Write the userEnteredANewCityName Delegate method here:
+        
+        
+        //MARK: Model Manupulation Method
+        
+        
+        func saveItems(){
+            
+            let encoder = PropertyListEncoder()
+            do {
+                let data = try encoder.encode(itemArray)
+                try data.write(to: dataFilePath!)
+            } catch {
+                print("Error Encoding itemArray, \(error)")
+            }
+            
+            tableView.reloadData()
+            
         }
         
-        self.tableView.reloadData()
-    }
-    
-    
-    
+        func loadItems(){
+            
+            if let data = try? Data(contentsOf: dataFilePath!){
+                let decoder = PropertyListDecoder()
+                do {
+                    itemArray = try decoder.decode([QueryItems].self, from: data)
+                } catch {
+                    print("Error decoding item array,\(error)")
+                }
+                
+            }
+            
+            self.tableView.reloadData()
+        }
+        
+        
+        
     }
     
 }
 
-
+//MARK: SearchBar Delegate Methods
 extension SearchTableViewController: UISearchBarDelegate{
     
     
-    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        self.movieName = searchBar.text!
-        getMovieData(name: movieName)
-        
-        
-        if searchBar.text?.count == 0 {
-            self.queriesArray = self.itemArray
+        DispatchQueue.main.async {
             
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
+            self.movie = searchBar.text!
+            self.getMovieData(name: self.movie)
+            
         }
+        
+        
     }
     
     
@@ -261,7 +246,14 @@ extension SearchTableViewController: UISearchBarDelegate{
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("Cancel")
+        
+        searchBar.showsCancelButton = false
+        
+        self.queriesArray = self.itemArray
+        
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
     }
     
 }
