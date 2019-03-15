@@ -18,9 +18,10 @@
 		F5361A6F22381868008E5420 /* MovietoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5361A6E22381868008E5420 /* MovietoTests.swift */; };
 		F5361A7A22381868008E5420 /* MovietoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5361A7922381868008E5420 /* MovietoUITests.swift */; };
 		F570BA1D223A3A1300A278E4 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA1C223A3A1300A278E4 /* MovieListViewController.swift */; };
-		F570BA23223A4D6800A278E4 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA22223A4D6800A278E4 /* Item.swift */; };
+		F570BA23223A4D6800A278E4 /* QueryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA22223A4D6800A278E4 /* QueryItems.swift */; };
 		F570BA2B223B994C00A278E4 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */; };
 		F570BA2C223B994C00A278E4 /* CustomAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */; };
+		F570BA2F223BFD7800A278E4 /* ResultItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA2E223BFD7800A278E4 /* ResultItems.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,9 +64,10 @@
 		F5361A7922381868008E5420 /* MovietoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovietoUITests.swift; sourceTree = "<group>"; };
 		F5361A7B22381868008E5420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F570BA1C223A3A1300A278E4 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
-		F570BA22223A4D6800A278E4 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F570BA22223A4D6800A278E4 /* QueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryItems.swift; sourceTree = "<group>"; };
 		F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
 		F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAlertViewController.xib; sourceTree = "<group>"; };
+		F570BA2E223BFD7800A278E4 /* ResultItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItems.swift; sourceTree = "<group>"; };
 		F8A2241CDFABB860814635BB /* Pods-MovietoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovietoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovietoUITests/Pods-MovietoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,9 +187,10 @@
 		F570BA1F223A3A3C00A278E4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F5361A6222381868008E5420 /* LaunchScreen.storyboard */,
-				F570BA28223B96FC00A278E4 /* Custom Alert */,
 				F5361A5A22381867008E5420 /* Main.storyboard */,
+				F5361A6222381868008E5420 /* LaunchScreen.storyboard */,
+				F570BA2D223BEA8B00A278E4 /* Custom Cell */,
+				F570BA28223B96FC00A278E4 /* Custom Alert */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -203,7 +206,8 @@
 		F570BA21223A3A6E00A278E4 /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				F570BA22223A4D6800A278E4 /* Item.swift */,
+				F570BA22223A4D6800A278E4 /* QueryItems.swift */,
+				F570BA2E223BFD7800A278E4 /* ResultItems.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -215,6 +219,13 @@
 				F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */,
 			);
 			path = "Custom Alert";
+			sourceTree = "<group>";
+		};
+		F570BA2D223BEA8B00A278E4 /* Custom Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Custom Cell";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -447,8 +458,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5361A5922381867008E5420 /* SearchTableViewController.swift in Sources */,
+				F570BA2F223BFD7800A278E4 /* ResultItems.swift in Sources */,
 				F570BA2B223B994C00A278E4 /* CustomAlertViewController.swift in Sources */,
-				F570BA23223A4D6800A278E4 /* Item.swift in Sources */,
+				F570BA23223A4D6800A278E4 /* QueryItems.swift in Sources */,
 				F5361A5722381866008E5420 /* AppDelegate.swift in Sources */,
 				F570BA1D223A3A1300A278E4 /* MovieListViewController.swift in Sources */,
 			);
@@ -626,8 +638,8 @@
 			baseConfigurationReference = 984F2CD6D9DE1C62845DC891 /* Pods-Movieto.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XYY68H4963;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Movieto/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -636,6 +648,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.alireza.Movieto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -646,8 +659,8 @@
 			baseConfigurationReference = 5874DF71EDFC098C6A6C0ECF /* Pods-Movieto.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XYY68H4963;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Movieto/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -656,6 +669,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.alireza.Movieto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
