@@ -7,8 +7,9 @@ import SwiftyJSON
 class SearchTableViewController: UITableViewController{
     
     
-    var itemArray = [Item]()
-    var queriesArray = [Item]()
+    var itemArray = [QueryItems]()
+    var queriesArray = [QueryItems]()
+    var resultArray = [ResultItems]()
     
     //Constants
     var movieName: String = ""
@@ -96,11 +97,12 @@ class SearchTableViewController: UITableViewController{
                     response in
                     if response.result.isSuccess {
                         print("Success!Got the Movie data")
-                        var item = Item()
+                        var item = QueryItems()
                         item.text = name
                         self.itemArray.append(item)
         
                         let movieJSON: JSON = JSON(response.result.value!)
+                        print(movieJSON)
                         updateMovieData(json: movieJSON)
                     } else {
                         print("Error \(String(describing: response.result.error))")
@@ -128,18 +130,22 @@ class SearchTableViewController: UITableViewController{
     //We parse our Recieved Json here and update uiTableview cell to show our result
     func updateMovieData(json: JSON){
         
-        //        if let tempResult  = json["main"]["temp"].double {
-        //
-        //            wetherDataModel.temperature = Int(tempResult - 273.15)
-        //            wetherDataModel.city = json["name"].stringValue
-        //            wetherDataModel.condition = json["weather"][0]["id"].intValue
-        //            wetherDataModel.weatherIconName = wetherDataModel.updateWeatherIcon(condition: wetherDataModel.condition)
-        //            updateUIWithWeatherData()
-        //        } else {
-        //            cityLabel.text = "Weather Unavailable"
-        //        }
+        let resultItem = ResultItems()
         
-    }
+            for i in 0 ..< 20{
+                let jsonItem = json["results"][i]
+                
+                resultItem.fullOverview = jsonItem["overview"].stringValue
+                
+                resultItem.movieName = jsonItem["title"].stringValue
+                
+                resultItem.poterPath = jsonItem["poster_path"].stringValue
+                
+                resultItem.releaseDate = jsonItem["release_date"].stringValue
+                
+                resultArray.append(resultItem)
+            }
+        }
     
     
     
@@ -198,7 +204,7 @@ class SearchTableViewController: UITableViewController{
         if let data = try? Data(contentsOf: dataFilePath!){
         let decoder = PropertyListDecoder()
         do {
-            itemArray = try decoder.decode([Item].self, from: data)
+            itemArray = try decoder.decode([QueryItems].self, from: data)
         } catch {
             print("Error decoding item array,\(error)")
         }
@@ -242,7 +248,7 @@ extension SearchTableViewController: UISearchBarDelegate{
         if searchText.count != 0{
             
             let key = searchText
-            let filteredStrings = self.itemArray.filter({(item: Item) -> Bool in
+            let filteredStrings = self.itemArray.filter({(item: QueryItems) -> Bool in
                 
                 let stringMatch = item.text.lowercased().range(of: key.lowercased())
                 return stringMatch != nil ? true : false
