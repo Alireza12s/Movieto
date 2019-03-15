@@ -18,8 +18,6 @@
 		F5361A6F22381868008E5420 /* MovietoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5361A6E22381868008E5420 /* MovietoTests.swift */; };
 		F5361A7A22381868008E5420 /* MovietoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5361A7922381868008E5420 /* MovietoUITests.swift */; };
 		F570BA23223A4D6800A278E4 /* QueryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA22223A4D6800A278E4 /* QueryItems.swift */; };
-		F570BA2B223B994C00A278E4 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */; };
-		F570BA2C223B994C00A278E4 /* CustomAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */; };
 		F570BA2F223BFD7800A278E4 /* ResultItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA2E223BFD7800A278E4 /* ResultItems.swift */; };
 		F570BA32223C0D6A00A278E4 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA30223C0D6A00A278E4 /* CustomTableViewCell.swift */; };
 		F570BA33223C0D6A00A278E4 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F570BA31223C0D6A00A278E4 /* CustomTableViewCell.xib */; };
@@ -66,8 +64,6 @@
 		F5361A7922381868008E5420 /* MovietoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovietoUITests.swift; sourceTree = "<group>"; };
 		F5361A7B22381868008E5420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F570BA22223A4D6800A278E4 /* QueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryItems.swift; sourceTree = "<group>"; };
-		F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
-		F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAlertViewController.xib; sourceTree = "<group>"; };
 		F570BA2E223BFD7800A278E4 /* ResultItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItems.swift; sourceTree = "<group>"; };
 		F570BA30223C0D6A00A278E4 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F570BA31223C0D6A00A278E4 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
@@ -194,7 +190,6 @@
 				F5361A5A22381867008E5420 /* Main.storyboard */,
 				F5361A6222381868008E5420 /* LaunchScreen.storyboard */,
 				F570BA2D223BEA8B00A278E4 /* Custom Cell */,
-				F570BA28223B96FC00A278E4 /* Custom Alert */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -214,15 +209,6 @@
 				F570BA2E223BFD7800A278E4 /* ResultItems.swift */,
 			);
 			path = "Data Model";
-			sourceTree = "<group>";
-		};
-		F570BA28223B96FC00A278E4 /* Custom Alert */ = {
-			isa = PBXGroup;
-			children = (
-				F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */,
-				F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */,
-			);
-			path = "Custom Alert";
 			sourceTree = "<group>";
 		};
 		F570BA2D223BEA8B00A278E4 /* Custom Cell */ = {
@@ -342,7 +328,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F570BA2C223B994C00A278E4 /* CustomAlertViewController.xib in Resources */,
 				F5361A6422381868008E5420 /* LaunchScreen.storyboard in Resources */,
 				F5361A6122381868008E5420 /* Assets.xcassets in Resources */,
 				F570BA33223C0D6A00A278E4 /* CustomTableViewCell.xib in Resources */,
@@ -466,7 +451,6 @@
 			files = (
 				F5361A5922381867008E5420 /* SearchTableViewController.swift in Sources */,
 				F570BA2F223BFD7800A278E4 /* ResultItems.swift in Sources */,
-				F570BA2B223B994C00A278E4 /* CustomAlertViewController.swift in Sources */,
 				F570BA32223C0D6A00A278E4 /* CustomTableViewCell.swift in Sources */,
 				F570BA23223A4D6800A278E4 /* QueryItems.swift in Sources */,
 				F570BA35223C0FDF00A278E4 /* MovieListTableViewController.swift in Sources */,

@@ -8,7 +8,7 @@ class SearchTableViewController: UITableViewController{
     
     
     var itemArray = [QueryItems]()
-    var queriesArray = [QueryItems]()
+    var queriesArray = [QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems()]
     var resultArray = [ResultItems]()
     
     //Constants
@@ -23,18 +23,15 @@ class SearchTableViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         tableView.delegate = self
         
-//        loadItems()
-        
-        
+       f()
     }
     
     //MARK: Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if queriesArray.count == 0{
-            return 0
+        if queriesArray.count>10{
+            return 10
         } else {
             return queriesArray.count
         }
@@ -89,12 +86,14 @@ class SearchTableViewController: UITableViewController{
             response in
             if response.result.isSuccess {
                 print("Success!Got the Movie data")
-                var item = QueryItems()
+                let item = QueryItems()
                 item.text = name
+                
+                
                 self.itemArray.append(item)
                 
                 let movieJSON: JSON = JSON(response.result.value!)
-                updateMovieData(json: movieJSON)
+                self.updateMovieData(json: movieJSON)
                 
             } else {
                 print("Error \(String(describing: response.result.error))")
@@ -108,12 +107,12 @@ class SearchTableViewController: UITableViewController{
                 self.present(connectionAlert, animated: true, completion: nil)
             }
             
-            saveItems()
+            self.saveItems()
             
         }
         
         
-        
+    }
         
         
         
@@ -165,7 +164,6 @@ class SearchTableViewController: UITableViewController{
             
         }
         
-        //Write the userEnteredANewCityName Delegate method here:
         
         
         //MARK: Model Manupulation Method
@@ -200,9 +198,15 @@ class SearchTableViewController: UITableViewController{
             self.tableView.reloadData()
         }
         
-        
-        
+    func f(){
+        loadItems()
+        if itemArray.count > 10 {
+        try? self.queriesArray = Array(itemArray.suffix(from: itemArray.count - 10))
+        }
+        self.tableView.reloadData()
     }
+        
+    
     
 }
 
@@ -212,14 +216,31 @@ extension SearchTableViewController: UISearchBarDelegate{
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
+        self.f()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
+        
+        if searchBar.text == ""{
+            let emptyNameAlert = UIAlertController(title: "Empty Name", message: "Please Enter a Movie Name", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
+            
+            emptyNameAlert.addAction(action)
+            
+            self.present(emptyNameAlert, animated: true, completion: nil)
+        } else {
+        
+            
+            
         DispatchQueue.main.async {
             
             self.movie = searchBar.text!
+            
             self.getMovieData(name: self.movie)
+            
+        }
             
         }
         
@@ -229,8 +250,9 @@ extension SearchTableViewController: UISearchBarDelegate{
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        
-        if searchText.count != 0{
+        if searchText.count == 0 {
+            self.f()
+        }else if  searchText.count != 0{
             
             let key = searchText
             let filteredStrings = self.itemArray.filter({(item: QueryItems) -> Bool in
@@ -250,6 +272,10 @@ extension SearchTableViewController: UISearchBarDelegate{
         searchBar.showsCancelButton = false
         
         self.queriesArray = self.itemArray
+        
+        searchBar.text = ""
+        
+        self.f()
         
         DispatchQueue.main.async {
             searchBar.resignFirstResponder()

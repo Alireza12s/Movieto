@@ -93,8 +93,8 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="x6V-Go-LKY" id="740-zi-Zc8"/>
-                            <outlet property="delegate" destination="x6V-Go-LKY" id="grJ-an-oZm"/>
+                            <outlet property="dataSource" destination="x6V-Go-LKY" id="4Mb-qW-aVl"/>
+                            <outlet property="delegate" destination="x6V-Go-LKY" id="bJA-wA-32l"/>
                         </connections>
                     </tableView>
                 </tableViewController>

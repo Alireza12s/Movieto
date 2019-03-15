@@ -10,9 +10,13 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner">
+            <connections>
+                <outlet property="textView" destination="NYy-5v-0ci" id="9ZK-hI-G3e"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="139" id="KGk-i7-Jjw" customClass="CustomTableViewCell" customModule="Movieto" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CustomCell" rowHeight="139" id="KGk-i7-Jjw" customClass="CustomTableViewCell" customModule="Movieto" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="400" height="150"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -25,11 +29,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQw-pn-xi3" userLabel="TopLeftView">
                                 <rect key="frame" x="0.0" y="0.0" width="200" height="75"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B9Q-aZ-Jiq">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B9Q-aZ-Jiq" userLabel="ImageView">
                                         <rect key="frame" x="65" y="2.5" width="70" height="70"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.57414853570000002" green="0.57416242360000003" blue="0.57415497299999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="B9Q-aZ-Jiq" secondAttribute="trailing" constant="65" id="1xi-DW-ZfW"/>
                                     <constraint firstItem="B9Q-aZ-Jiq" firstAttribute="top" secondItem="SQw-pn-xi3" secondAttribute="top" constant="2.5" id="6sa-H3-6GR"/>
@@ -40,14 +44,15 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SZE-Ov-T0a" userLabel="TopRightView">
                                 <rect key="frame" x="200" y="0.0" width="200" height="75"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name(ReleaseDate)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OSf-xA-2gK">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name(ReleaseDate)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OSf-xA-2gK" userLabel="Name_ReleaseDate">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="75"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="OSf-xA-2gK" firstAttribute="leading" secondItem="SZE-Ov-T0a" secondAttribute="leading" id="2ln-n2-HSX"/>
                                     <constraint firstItem="OSf-xA-2gK" firstAttribute="top" secondItem="SZE-Ov-T0a" secondAttribute="top" id="5Nq-lf-Ih8"/>
@@ -56,7 +61,6 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.15686274510000001" green="0.66666666669999997" blue="0.75294117650000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="SZE-Ov-T0a" firstAttribute="leading" secondItem="SQw-pn-xi3" secondAttribute="trailing" id="4os-2r-J9l"/>
                             <constraint firstItem="SQw-pn-xi3" firstAttribute="leading" secondItem="EIW-Dm-V4n" secondAttribute="leading" id="5ni-0m-Jol"/>
@@ -73,15 +77,15 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tuQ-Qe-pEG" userLabel="BottomView">
                         <rect key="frame" x="0.0" y="75" width="400" height="74.5"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Full Overview" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NYy-5v-0ci">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Full Overview" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NYy-5v-0ci" userLabel="TextView">
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
-                        <color key="backgroundColor" red="0.95672830610000004" green="0.428055346" blue="0.73835808039999995" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                 </subviews>
                 <constraints>
@@ -97,11 +101,12 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="nameAndDateLabel" destination="OSf-xA-2gK" id="uXd-Wa-ZjV"/>
+                <outlet property="posterImageView" destination="B9Q-aZ-Jiq" id="T9F-Rp-3Ao"/>
+                <outlet property="textView" destination="NYy-5v-0ci" id="Q1t-bD-mVa"/>
+            </connections>
             <point key="canvasLocation" x="119.2" y="191.1544227886057"/>
         </tableViewCell>
-        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="7Gy-ch-ckp">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-        </imageView>
     </objects>
 </document>

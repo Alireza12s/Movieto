@@ -3,7 +3,7 @@ import Foundation
 
 class ResultItems {
     
-    var poterPath: String = ""
+    var poterPath: String?
     
     var movieName: String = ""
     
