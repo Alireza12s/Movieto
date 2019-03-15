@@ -19,6 +19,8 @@
 		F5361A7A22381868008E5420 /* MovietoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5361A7922381868008E5420 /* MovietoUITests.swift */; };
 		F570BA1D223A3A1300A278E4 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA1C223A3A1300A278E4 /* MovieListViewController.swift */; };
 		F570BA23223A4D6800A278E4 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA22223A4D6800A278E4 /* Item.swift */; };
+		F570BA2B223B994C00A278E4 /* CustomAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */; };
+		F570BA2C223B994C00A278E4 /* CustomAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		F5361A7B22381868008E5420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F570BA1C223A3A1300A278E4 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		F570BA22223A4D6800A278E4 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewController.swift; sourceTree = "<group>"; };
+		F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomAlertViewController.xib; sourceTree = "<group>"; };
 		F8A2241CDFABB860814635BB /* Pods-MovietoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovietoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovietoUITests/Pods-MovietoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -181,6 +185,8 @@
 		F570BA1F223A3A3C00A278E4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F5361A6222381868008E5420 /* LaunchScreen.storyboard */,
+				F570BA28223B96FC00A278E4 /* Custom Alert */,
 				F5361A5A22381867008E5420 /* Main.storyboard */,
 			);
 			path = Views;
@@ -190,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				F5361A6022381868008E5420 /* Assets.xcassets */,
-				F5361A6222381868008E5420 /* LaunchScreen.storyboard */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -201,6 +206,15 @@
 				F570BA22223A4D6800A278E4 /* Item.swift */,
 			);
 			path = "Data Model";
+			sourceTree = "<group>";
+		};
+		F570BA28223B96FC00A278E4 /* Custom Alert */ = {
+			isa = PBXGroup;
+			children = (
+				F570BA29223B994C00A278E4 /* CustomAlertViewController.swift */,
+				F570BA2A223B994C00A278E4 /* CustomAlertViewController.xib */,
+			);
+			path = "Custom Alert";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,6 +325,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F570BA2C223B994C00A278E4 /* CustomAlertViewController.xib in Resources */,
 				F5361A6422381868008E5420 /* LaunchScreen.storyboard in Resources */,
 				F5361A6122381868008E5420 /* Assets.xcassets in Resources */,
 				F5361A5C22381867008E5420 /* Main.storyboard in Resources */,
@@ -432,6 +447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5361A5922381867008E5420 /* SearchTableViewController.swift in Sources */,
+				F570BA2B223B994C00A278E4 /* CustomAlertViewController.swift in Sources */,
 				F570BA23223A4D6800A278E4 /* Item.swift in Sources */,
 				F5361A5722381866008E5420 /* AppDelegate.swift in Sources */,
 				F570BA1D223A3A1300A278E4 /* MovieListViewController.swift in Sources */,
