@@ -8,11 +8,9 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     
-    @IBOutlet var textView: UITextView!
+    @IBOutlet var posterImage: UIImageView!
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var overviewText: UITextView!
     
-    @IBOutlet var posterImageView: UIImageView!
-    
-    @IBOutlet var nameAndDateLabel: UILabel!
-    
-
+    @IBOutlet var dateLabel: UILabel!
 }

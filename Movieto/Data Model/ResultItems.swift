@@ -1,7 +1,9 @@
 import Foundation
 
 
-class ResultItems {
+class ResultItems:Codable {
+    
+    
     
     var poterPath: String?
     

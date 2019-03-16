@@ -1,6 +1,5 @@
 import Alamofire
 import UIKit
-import Alamofire
 import SwiftyJSON
 
 
@@ -13,17 +12,22 @@ class SearchTableViewController: UITableViewController{
     
     //Constants
     var movie: String = ""
+    
     let APIKey: String = "f7128111cfbf8f7d2850e8ba64058948"
+    
     let movieURL: String = "https://api.themoviedb.org/3/search/movie?api_key="
+    
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("SearchHistory.plist")
+    
+     let dataFilePath2 = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Result.plist")
     
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.delegate = self
+        tableView.dataSource = self
         
        f()
     }
@@ -98,7 +102,9 @@ class SearchTableViewController: UITableViewController{
             } else {
                 print("Error \(String(describing: response.result.error))")
                 
-                let connectionAlert = UIAlertController(title: "Connection Issue", message: "Please Check Your Internet Connection", preferredStyle: .alert)
+//                "Please Check Your Internet Connection"
+                
+                let connectionAlert = UIAlertController(title: "Connection Issue", message: "Error \(String(describing: response.result.error))", preferredStyle: .alert)
                 
                 let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 
@@ -142,16 +148,32 @@ class SearchTableViewController: UITableViewController{
                 
                 resultArray.append(resultItem)
             }
-            
+            saveResult()
             performSegue(withIdentifier: "SearchSegue", sender: nil)
         }
+    
+    
+    //MARK: Save Search Result
+    
+    func saveResult(){
         
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(resultArray)
+            try data.write(to: dataFilePath2!)
+        } catch {
+            print("Error Encoding itemArray, \(error)")
+        }
         
-        
-        
-        //MARK: - UI Updates
-        /***************************************************************/
-        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SearchSegue"{
+            let vC = segue.destination as! MovieListTableViewController
+            vC.dtatFilePath = dataFilePath2
+        }
+    }
+
         
         
         
@@ -164,12 +186,13 @@ class SearchTableViewController: UITableViewController{
             
         }
         
-        
+    
         
         //MARK: Model Manupulation Method
         
         
         func saveItems(){
+            itemArray = Array(Set<QueryItems>(itemArray))
             
             let encoder = PropertyListEncoder()
             do {
@@ -201,7 +224,7 @@ class SearchTableViewController: UITableViewController{
     func f(){
         loadItems()
         if itemArray.count > 10 {
-        try? self.queriesArray = Array(itemArray.suffix(from: itemArray.count - 10))
+        self.queriesArray = Array(itemArray.suffix(from: itemArray.count - 10))
         }
         self.tableView.reloadData()
     }
