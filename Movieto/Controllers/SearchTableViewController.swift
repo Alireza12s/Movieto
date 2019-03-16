@@ -25,9 +25,12 @@ class SearchTableViewController: UITableViewController{
     
     
     override func viewDidLoad() {
+        resultArray = []
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        saveResult()
+        
         
        f()
     }
@@ -83,8 +86,9 @@ class SearchTableViewController: UITableViewController{
     
     //MARK: Get Movie Data
     func getMovieData(name: String){
+        let formattedName = String(name.replacingOccurrences(of: " ", with: "%20"))
         
-        let url: String = makeURL(MovieName: name)
+        let url: String = makeURL(MovieName: formattedName)
         
         Alamofire.request(url,method: .get).responseJSON{
             response in
@@ -133,18 +137,18 @@ class SearchTableViewController: UITableViewController{
         //We parse our Recieved Json here and update uiTableview cell to show our result
         func updateMovieData(json: JSON){
             
-            let resultItem = ResultItems()
+            
             
             for i in 0 ..< 20{
-                let jsonItem = json["results"][i]
+                let resultItem = ResultItems()
                 
-                resultItem.fullOverview = jsonItem["overview"].stringValue
+                resultItem.fullOverview = json["results"][i]["overview"].stringValue
                 
-                resultItem.movieName = jsonItem["title"].stringValue
+                resultItem.movieName = json["results"][i]["title"].stringValue
                 
-                resultItem.poterPath = jsonItem["poster_path"].stringValue
+                resultItem.poterPath = json["results"][i]["poster_path"].stringValue
                 
-                resultItem.releaseDate = jsonItem["release_date"].stringValue
+                resultItem.releaseDate = json["results"][i]["release_date"].stringValue
                 
                 resultArray.append(resultItem)
             }
@@ -174,19 +178,6 @@ class SearchTableViewController: UITableViewController{
         }
     }
 
-        
-        
-        
-        //MARK: - Change Movie Delegate methods
-        /***************************************************************/
-        func userEnteredANewMovieName(movie: String) {
-            
-            //        let params: [String : String] = ["q" : city, "appid" : APP_ID]
-            //        getMovieData(url: WEATHER_URL, parameters: params)
-            
-        }
-        
-    
         
         //MARK: Model Manupulation Method
         
@@ -223,7 +214,7 @@ class SearchTableViewController: UITableViewController{
         
     func f(){
         loadItems()
-        if itemArray.count > 10 {
+        if itemArray.count > 9{
         self.queriesArray = Array(itemArray.suffix(from: itemArray.count - 10))
         }
         self.tableView.reloadData()
@@ -237,10 +228,15 @@ class SearchTableViewController: UITableViewController{
 extension SearchTableViewController: UISearchBarDelegate{
     
     
+    
+    
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
         self.f()
+        searchBar.showsCancelButton = true
+        
     }
+    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         

@@ -17,7 +17,6 @@ class MovieListTableViewController: UITableViewController {
         loadResult()
         
         
-        
         //MARK: Register Custom Cell
         tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "ResultCell")
     }
@@ -35,7 +34,6 @@ class MovieListTableViewController: UITableViewController {
             
         }
         
-        self.tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -46,17 +44,15 @@ class MovieListTableViewController: UITableViewController {
         
     }
     
-    //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    //        return 150
-    //    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! CustomTableViewCell
         
         cell.overviewText.text = array[indexPath.row].fullOverview
+        cell.nameLabel.text = self.array[indexPath.row].movieName
+        cell.dateLabel.text = self.array[indexPath.row].releaseDate
         
-        if let imagePath = array[indexPath.row].poterPath{
+        let imagePath = array[indexPath.row].poterPath
             
             do {
                 let url = movieURL + imagePath
@@ -64,29 +60,26 @@ class MovieListTableViewController: UITableViewController {
                 .validate()
                 .responseData(completionHandler: { (responseData) in
                     
-                    cell.posterImage.image = UIImage(data: responseData.data!)
+                   try? cell.posterImage.image = UIImage(data: responseData.data!)
                     print("Image downloaded")
                     })
                 } catch {
                     print("Error downloading image,\(error)")
-                    exit(1)
                 }
-                
-            
-            
-           
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-        
-        cell.nameLabel.text = array[indexPath.row].movieName
-        cell.dateLabel.text = array[indexPath.row].releaseDate
-        
+
         return cell
     }
     
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.array = []
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(self.array)
+            try data.write(to: self.dtatFilePath!)
+        } catch {
+            print("Error Encoding itemArray, \(error)")
+        }
+    }
     
     
 }
