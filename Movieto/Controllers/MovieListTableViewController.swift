@@ -19,7 +19,10 @@ class MovieListTableViewController: UITableViewController {
         
         //MARK: Register Custom Cell
         tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "ResultCell")
+        tableView.reloadData()
     }
+    
+    
     
     
     //Mark: Load Result Data
@@ -40,38 +43,42 @@ class MovieListTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                return array.count
+        return array.count
         
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        tableView.estimatedRowHeight = 150
+        return UITableView.automaticDimension
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! CustomTableViewCell
         
-        cell.overviewText.text = array[indexPath.row].fullOverview
+        cell.overViewLabel.text = array[indexPath.row].fullOverview
         cell.nameLabel.text = self.array[indexPath.row].movieName
         cell.dateLabel.text = self.array[indexPath.row].releaseDate
         
         let imagePath = array[indexPath.row].poterPath
-            
-            do {
-                let url = movieURL + imagePath
-            Alamofire.request(url, method: .get)
-                .validate()
-                .responseData(completionHandler: { (responseData) in
-                    
-                   try? cell.posterImage.image = UIImage(data: responseData.data!)
-                    print("Image downloaded")
-                    })
-                } catch {
-                    print("Error downloading image,\(error)")
-                }
-
+        
+        let url = movieURL + imagePath
+        Alamofire.request(url, method: .get)
+            .validate()
+            .responseData(completionHandler: { (responseData) in
+                
+                cell.posterImage.image = UIImage(data: responseData.data!)
+                print("Image downloaded")
+            })
+        
+        
         return cell
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool){
         self.array = []
+        tableView.reloadData()
         let encoder = PropertyListEncoder()
         do {
             let data = try encoder.encode(self.array)
@@ -82,6 +89,9 @@ class MovieListTableViewController: UITableViewController {
     }
     
     
+    
+    
+
 }
 
 

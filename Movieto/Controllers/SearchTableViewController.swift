@@ -19,20 +19,24 @@ class SearchTableViewController: UITableViewController{
     
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("SearchHistory.plist")
     
-     let dataFilePath2 = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Result.plist")
+    let dataFilePath2 = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Result.plist")
     
     
     
     
     override func viewDidLoad() {
-        resultArray = []
+        
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        saveResult()
-        
         
        f()
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        resultArray = []
+        saveResult()
     }
     
     //MARK: Tableview Datasource Methods
@@ -106,9 +110,8 @@ class SearchTableViewController: UITableViewController{
             } else {
                 print("Error \(String(describing: response.result.error))")
                 
-//                "Please Check Your Internet Connection"
                 
-                let connectionAlert = UIAlertController(title: "Connection Issue", message: "Error \(String(describing: response.result.error))", preferredStyle: .alert)
+                let connectionAlert = UIAlertController(title: "Connection Issue", message: "Please Check Your Internet Connection", preferredStyle: .alert)
                 
                 let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 
@@ -134,12 +137,11 @@ class SearchTableViewController: UITableViewController{
         /***************************************************************/
         
         
-        //We parse our Recieved Json here and update uiTableview cell to show our result
+        //We parse our Recieved Json here and save results
         func updateMovieData(json: JSON){
             
-            
-            
-            for i in 0 ..< 20{
+           let numberOfResults = json["results"].count
+                for i in 0 ..< numberOfResults{
                 let resultItem = ResultItems()
                 
                 resultItem.fullOverview = json["results"][i]["overview"].stringValue

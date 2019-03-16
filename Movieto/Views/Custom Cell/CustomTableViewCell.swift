@@ -10,7 +10,6 @@ class CustomTableViewCell: UITableViewCell {
     
     @IBOutlet var posterImage: UIImageView!
     @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var overviewText: UITextView!
-    
+    @IBOutlet var overViewLabel: UILabel!
     @IBOutlet var dateLabel: UILabel!
 }

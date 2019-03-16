@@ -20,21 +20,20 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tuQ-Qe-pEG" userLabel="BottomView">
-                        <rect key="frame" x="0.0" y="74" width="465" height="75"/>
+                        <rect key="frame" x="0.0" y="67" width="465" height="75"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Full Overview" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NYy-5v-0ci" userLabel="TextView">
-                                <rect key="frame" x="0.0" y="0.0" width="465" height="75"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Twm-Ar-5l4" userLabel="TextView">
+                                <rect key="frame" x="0.0" y="8" width="465" height="75"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="NYy-5v-0ci" firstAttribute="top" secondItem="tuQ-Qe-pEG" secondAttribute="top" id="2F7-AY-Bd0"/>
-                            <constraint firstAttribute="bottom" secondItem="NYy-5v-0ci" secondAttribute="bottom" id="CR5-gm-hfl"/>
-                            <constraint firstAttribute="trailing" secondItem="NYy-5v-0ci" secondAttribute="trailing" id="nhk-Qd-uRl"/>
-                            <constraint firstItem="NYy-5v-0ci" firstAttribute="leading" secondItem="tuQ-Qe-pEG" secondAttribute="leading" id="xBA-Ey-rd0"/>
+                            <constraint firstItem="Twm-Ar-5l4" firstAttribute="top" secondItem="tuQ-Qe-pEG" secondAttribute="top" constant="8" id="7Jr-Fr-F0S"/>
+                            <constraint firstItem="Twm-Ar-5l4" firstAttribute="leading" secondItem="tuQ-Qe-pEG" secondAttribute="leading" id="S4g-4j-ZR7"/>
+                            <constraint firstAttribute="trailing" secondItem="Twm-Ar-5l4" secondAttribute="trailing" id="TX9-ik-9BA"/>
+                            <constraint firstAttribute="bottom" secondItem="Twm-Ar-5l4" secondAttribute="bottom" constant="-8" id="esX-MW-ItG"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EIW-Dm-V4n" userLabel="TopView">
@@ -129,8 +128,8 @@
                     <constraint firstItem="tuQ-Qe-pEG" firstAttribute="height" secondItem="EIW-Dm-V4n" secondAttribute="height" id="4mt-JX-ZYi"/>
                     <constraint firstItem="EIW-Dm-V4n" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="AUT-8w-5ur"/>
                     <constraint firstItem="EIW-Dm-V4n" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="MEB-IH-Hik"/>
-                    <constraint firstItem="tuQ-Qe-pEG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="63" id="TzY-Xv-VgC"/>
                     <constraint firstAttribute="trailing" secondItem="EIW-Dm-V4n" secondAttribute="trailing" id="YTO-pi-ahP"/>
+                    <constraint firstItem="tuQ-Qe-pEG" firstAttribute="top" secondItem="EIW-Dm-V4n" secondAttribute="bottomMargin" id="cVo-WK-JwY"/>
                     <constraint firstItem="EIW-Dm-V4n" firstAttribute="leading" secondItem="tuQ-Qe-pEG" secondAttribute="leading" id="uDd-Wf-kIq"/>
                 </constraints>
             </tableViewCellContentView>
@@ -138,7 +137,7 @@
             <connections>
                 <outlet property="dateLabel" destination="oIV-ej-nDF" id="vcw-pQ-zNt"/>
                 <outlet property="nameLabel" destination="Pba-cv-Y4l" id="TIu-u5-dkd"/>
-                <outlet property="overviewText" destination="NYy-5v-0ci" id="fAC-cd-bFQ"/>
+                <outlet property="overViewLabel" destination="Twm-Ar-5l4" id="8tJ-sR-QQ7"/>
                 <outlet property="posterImage" destination="Kql-mm-yfh" id="WbL-ax-260"/>
             </connections>
             <point key="canvasLocation" x="170.40000000000001" y="190.70464767616193"/>
