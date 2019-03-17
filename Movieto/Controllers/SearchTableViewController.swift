@@ -66,6 +66,8 @@ class SearchTableViewController: UITableViewController{
         
         cell.textLabel?.text = item.text
         
+
+        
         return cell;
     }
     
@@ -73,12 +75,15 @@ class SearchTableViewController: UITableViewController{
     //MARK: TableView Delegate Mothods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if let movieName = self.tableView.cellForRow(at: indexPath)?.textLabel?.text {
-            getMovieData(name: movieName)
-            
-        } else {
-            print("Error empty cell")
+        let cell = self.tableView.cellForRow(at: indexPath)
+        if let movieName = cell?.textLabel?.text {
+            if !(cell?.textLabel?.text == " " || (cell?.textLabel?.text)! == ""){
+                
+                getMovieData(name: movieName)
+
+            } else {
+                cell?.isSelected = false
+            }
         }
         
         
