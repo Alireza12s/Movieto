@@ -27,14 +27,13 @@ class SearchTableViewController: UITableViewController{
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
         loadItems()
         tableView.delegate = self
         tableView.dataSource = self
 
         tableView.tableFooterView = UIView()//delete empty rows of table view
 
-        fixSuggestions()
+        tableView.reloadData()
     }
     
     
@@ -69,21 +68,7 @@ class SearchTableViewController: UITableViewController{
         return cell;
     }
     
-    //MARK: Delete Rows
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete) {
-            self.itemArray.remove(at: indexPath.row)
-//            self.tableView.deleteRows(at: [indexPath], with: .fade)
-            saveItems()
-            fixSuggestions()
-            self.tableView.reloadData()
-        }
-    }
-    
+
     
     //MARK: TableView Delegate Mothods
     
@@ -232,34 +217,37 @@ class SearchTableViewController: UITableViewController{
     
     //Save the queries in the phone
     func saveItems(){
-        itemArray = Array(Set<QueryItems>(itemArray))//delete repeated datas
-        itemArray = itemArray.filter({ $0.text != "" && $0.text != " "})
+        self.itemArray = Array(Set<QueryItems>(self.itemArray))//delete repeated datas
         let encoder = PropertyListEncoder()
         do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
+            let data = try encoder.encode(self.itemArray)
+            try data.write(to: self.dataFilePath!)
         } catch {
             print("Error Encoding itemArray, \(error)")
         }
         
-        tableView.reloadData()
-        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     //load queries from phone
     func loadItems(){
         
-        if let data = try? Data(contentsOf: dataFilePath!){
+        if let data = try? Data(contentsOf: self.dataFilePath!){
             let decoder = PropertyListDecoder()
             do {
-                itemArray = try decoder.decode([QueryItems].self, from: data)
+                self.itemArray = try decoder.decode([QueryItems].self, from: data)
             } catch {
                 print("Error decoding item array,\(error)")
             }
             
         }
         
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+        
     }
     
     func fixSuggestions(){
@@ -390,12 +378,12 @@ extension SearchTableViewController: UISearchBarDelegate{
         //When we click on cancel button then
         searchBar.showsCancelButton = false // cancell button will hide
         
-        self.queriesArray = self.itemArray //suggestions will be reset to 10 last search
+        self.tableView.reloadData()
+        
         
         searchBar.text = "" //empty serach bar textfield
         
-        self.fixSuggestions()
-        
+        self.tableView.reloadData()
         DispatchQueue.main.async {
             searchBar.resignFirstResponder() //hide keyboard
         }
