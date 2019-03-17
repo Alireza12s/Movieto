@@ -52,7 +52,6 @@ class SearchTableViewController: UITableViewController{
             return 10
         } else {
             return queriesArray.count
-            print(queriesArray.count)
         }
     }
     

@@ -13,11 +13,15 @@ class MovieListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         loadResult()
         
         
-        //MARK: Register Custom Cell
+        tableView.tableFooterView = UIView()//delete the empty rows in tableview
+        
+        //Register Custom Cell
         tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "ResultCell")
+        
         tableView.reloadData()
     }
     
@@ -39,6 +43,7 @@ class MovieListTableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
+    
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,20 +71,17 @@ class MovieListTableViewController: UITableViewController {
             
             cell.dateLabel.text = self.array[index].releaseDate
             
-            do {
             
-            let imagePath = array[index].posterPath
+            if let imagePath = array[index].posterPath {
             
-            let url = movieURL + imagePath
+                let url = movieURL + imagePath
             Alamofire.request(url, method: .get)
                 .validate()
                 .responseData(completionHandler: { (responseData) in
                     
-                   try!  cell.posterImage.image = UIImage(data: responseData.data!)
+                    cell.posterImage.image = UIImage(data: responseData.data!)
                     print("Image downloaded")
                 })
-            } catch {
-                print("No Image To Download")
             }
             
             
@@ -96,6 +98,9 @@ class MovieListTableViewController: UITableViewController {
             cell.textLabel!.font = UIFont.systemFont(ofSize: 14.0)
             
             cell.textLabel?.text = array[index].fullOverview
+            
+            cell.textLabel?.backgroundColor = UIColor(red:0.14, green:0.48, blue:0.63, alpha:1.0)
+            cell.backgroundColor = UIColor(red:0.14, green:0.48, blue:0.63, alpha:1.0)
             
             return cell
         }
