@@ -55,43 +55,64 @@ class MovieListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! CustomTableViewCell
+        let index = Int(indexPath.row / 2)
         
-        cell.overViewLabel.text = array[indexPath.row].fullOverview
-        cell.nameLabel.text = self.array[indexPath.row].movieName
-        cell.dateLabel.text = self.array[indexPath.row].releaseDate
-        
-        let imagePath = array[indexPath.row].poterPath
-        
-        let url = movieURL + imagePath
-        Alamofire.request(url, method: .get)
-            .validate()
-            .responseData(completionHandler: { (responseData) in
-                
-                cell.posterImage.image = UIImage(data: responseData.data!)
-                print("Image downloaded")
-            })
-        
-        
-        return cell
-    }
-    
-    override func viewDidDisappear(_ animated: Bool){
-        self.array = []
-        tableView.reloadData()
-        let encoder = PropertyListEncoder()
-        do {
-            let data = try encoder.encode(self.array)
-            try data.write(to: self.dtatFilePath!)
-        } catch {
-            print("Error Encoding itemArray, \(error)")
+        if indexPath.row % 2 == 0{
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! CustomTableViewCell
+            
+            cell.nameLabel.text = self.array[index].movieName
+            
+            cell.nameLabel!.font = UIFont.systemFont(ofSize: 11.0)
+            
+            cell.dateLabel.text = self.array[index].releaseDate
+            
+            let imagePath = array[indexPath.row].posterPath
+            
+            let url = movieURL + imagePath
+            Alamofire.request(url, method: .get)
+                .validate()
+                .responseData(completionHandler: { (responseData) in
+                    
+                    cell.posterImage.image = UIImage(data: responseData.data!)
+                    print("Image downloaded")
+                })
+            
+            
+            return cell
+            
+        } else {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "OverviewCell", for: indexPath)
+            
+            cell.textLabel!.numberOfLines = 0
+            
+            cell.textLabel!.lineBreakMode = .byWordWrapping
+            
+            cell.textLabel!.font = UIFont.systemFont(ofSize: 14.0)
+            
+            cell.textLabel?.text = array[index].fullOverview
+            
+            return cell
         }
     }
     
+    //    override func viewDidDisappear(_ animated: Bool){
+    //        self.array = []
+    //        tableView.reloadData()
+    //        let encoder = PropertyListEncoder()
+    //        do {
+    //            let data = try encoder.encode(self.array)
+    //            try data.write(to: self.dtatFilePath!)
+    //        } catch {
+    //            print("Error Encoding itemArray, \(error)")
+    //        }
+    //    }
     
     
     
-
+    
+    
 }
 
 

@@ -148,7 +148,7 @@ class SearchTableViewController: UITableViewController{
                 
                 resultItem.movieName = json["results"][i]["title"].stringValue
                 
-                resultItem.poterPath = json["results"][i]["poster_path"].stringValue
+                resultItem.posterPath = json["results"][i]["poster_path"].stringValue
                 
                 resultItem.releaseDate = json["results"][i]["release_date"].stringValue
                 
