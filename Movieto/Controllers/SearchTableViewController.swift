@@ -12,7 +12,6 @@ class SearchTableViewController: UITableViewController{
     var queriesArray = [QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems()]
     var resultArray = [ResultItems]()
     
-    //Constants
     var movie: String = ""
     
     let APIKey: String = "f7128111cfbf8f7d2850e8ba64058948"
@@ -33,13 +32,13 @@ class SearchTableViewController: UITableViewController{
         tableView.delegate = self
         tableView.dataSource = self
 
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView()//delete empty rows of table view
 
         fixSuggestions()
     }
     
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {//empty old result data and check network when app did appear
         resultArray = []
         saveResult()
         checkNtework()
@@ -48,7 +47,7 @@ class SearchTableViewController: UITableViewController{
     
     //MARK: Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if queriesArray.count>10{
+        if queriesArray.count>10{//if number of search histories are more than 10 it makes 10 cells else make cell to number of search histories
             return 10
         } else {
             return queriesArray.count
@@ -95,7 +94,7 @@ class SearchTableViewController: UITableViewController{
     /***************************************************************/
     
     //MARK: Make URL
-    func makeURL(MovieName name: String) -> String{
+    func makeURL(MovieName name: String) -> String{//make URL for sending API request
         return movieURL + APIKey + "&language=en-US&query=" + name + "&page=1&include_adult=false"
     }
     
@@ -103,9 +102,9 @@ class SearchTableViewController: UITableViewController{
     //MARK: Get Movie Data
     func getMovieData(name: String){
         self.movie = name
-        let formattedName = String(name.replacingOccurrences(of: " ", with: "%20"))
+        let encodedMovieName = name.encodeURIComponent()//encode the movie name to search through API request
         
-        let url: String = makeURL(MovieName: formattedName)
+        let url: String = makeURL(MovieName: encodedMovieName!)
         
         Alamofire.request(url,method: .get).responseJSON{
             response in
@@ -115,13 +114,13 @@ class SearchTableViewController: UITableViewController{
                 item.text = name
                 
                 
-                self.itemArray.append(item)
+                self.itemArray.append(item)//append movie name to search history
                 
-                let movieJSON: JSON = JSON(response.result.value!)
+                let movieJSON: JSON = JSON(response.result.value!)//send json result to pbe parsed
                 self.updateMovieData(json: movieJSON)
                 
             } else {
-                print("Error \(String(describing: response.result.error))")
+                print("Error \(String(describing: response.result.error))")//if network has a problem or in this special case even if vpn is dsconnected it makes an alert to tell user check your connection
                 
                 
                 let connectionAlert = UIAlertController(title: "Connection Issue", message: "Please Check Your Internet Connection", preferredStyle: .alert)
@@ -153,13 +152,13 @@ class SearchTableViewController: UITableViewController{
     //We parse our Recieved Json here and save results
     func updateMovieData(json: JSON){
         
-        let numberOfResults = json["results"].count
-        if numberOfResults  == 0 {
-            
+        let numberOfResults = json["results"].count//get number of answers
+        if numberOfResults  == 0 {//check that there is an answer for search or not
+            //if there is no answer we tell user movie name is wrong with alert
             let alert = UIAlertController(title: "No Movie Found", message: "No Results Found For \" \(movie) \" ", preferredStyle: .alert)
             
             let action = UIAlertAction(title: "OK", style: .default){ (_) in
-                
+                //when user clicks ok button in alert the search bar will empty and cancel button will disappear
                 self.searchBar.text = ""
                 
                 self.searchBar.endEditing(true)
@@ -195,7 +194,7 @@ class SearchTableViewController: UITableViewController{
     //MARK: Save Search Result
     
     func saveResult(){
-        
+        //save the results in format of Model in phone
         let encoder = PropertyListEncoder()
         do {
             let data = try encoder.encode(resultArray)
@@ -205,7 +204,7 @@ class SearchTableViewController: UITableViewController{
         }
         
     }
-    
+    //send result file path to movie list VC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SearchSegue"{
             let vC = segue.destination as! MovieListTableViewController
@@ -216,10 +215,10 @@ class SearchTableViewController: UITableViewController{
     
     //MARK: Model Manupulation Method
     
-    
+    //Save the queries in the phone
     func saveItems(){
-        itemArray = Array(Set<QueryItems>(itemArray))
-        
+        itemArray = Array(Set<QueryItems>(itemArray))//delete repeated datas
+        itemArray = itemArray.filter({ $0.text != "" && $0.text != " "})
         let encoder = PropertyListEncoder()
         do {
             let data = try encoder.encode(itemArray)
@@ -232,6 +231,7 @@ class SearchTableViewController: UITableViewController{
         
     }
     
+    //load queries from phone
     func loadItems(){
         
         if let data = try? Data(contentsOf: dataFilePath!){
@@ -252,17 +252,14 @@ class SearchTableViewController: UITableViewController{
         if itemArray.count > 9{
             self.queriesArray = Array(self.itemArray.suffix(from: self.itemArray.count - 10))
         }
-//         else {
-//            for i in 0..<self.queriesArray.count{
-//                self.queriesArray.append(self.itemArray[self.itemArray.count - 1 - i])
-//            }
-//        }
+        
         self.tableView.reloadData()
     }
     
-    
+    //MARK: Check Internet Connection
     func checkNtework(){
-        
+        //this code only available in ios 12 and later
+        //because our app needs intrnet it checks the internet connection and if it's off it sends user to setting that they could turn on WiFi\Cellular
         if #available(iOS 12.0, *) {
             let monitor = NWPathMonitor()
             
@@ -274,7 +271,7 @@ class SearchTableViewController: UITableViewController{
                     
                 } else {
                     
-                    print("No connection.")
+                    print("No connection.")//make alert to tell user about internet connection problem
                     let alert = UIAlertController(title: "Check Your Connection", message: "You're Not Connected To The Internet", preferredStyle: .alert)
                     
                     let action = UIAlertAction(title: "OK", style: .default){(action) in
@@ -282,7 +279,7 @@ class SearchTableViewController: UITableViewController{
                         guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                             return
                         }
-                        
+                        //by pressing ok button users will sends to setting to fix the connection
                         if UIApplication.shared.canOpenURL(settingsUrl) {
                             UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
                                 // Checking for setting is opened or not
@@ -300,7 +297,7 @@ class SearchTableViewController: UITableViewController{
                 
             }
             
-            let queue = DispatchQueue(label: "Monitor")
+            let queue = DispatchQueue(label: "Monitor")// in every moment in program it checks internet connection in search screeen
             
             monitor.start(queue: queue)
         }
@@ -316,18 +313,18 @@ extension SearchTableViewController: UISearchBarDelegate{
     
     
     
-    
+    //MARK: SearchBar Text Did Begin Changing
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         self.fixSuggestions()
-        searchBar.showsCancelButton = true
+        searchBar.showsCancelButton = true//it makes suggestions ready and will show cancell button
         
     }
     
-    
+    //MARK: Search Button Clicked
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        
-        if searchBar.text == ""{
+        //if user doesn't ener a movie name and the textfiels was only space character it will alert to him that you should enter a name
+        if searchBar.text == " "{
             let emptyNameAlert = UIAlertController(title: "Empty Name", message: "Please Enter a Movie Name", preferredStyle: .alert)
             
             let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
@@ -335,7 +332,7 @@ extension SearchTableViewController: UISearchBarDelegate{
             emptyNameAlert.addAction(action)
             
             self.present(emptyNameAlert, animated: true, completion: nil)
-        } else {
+        } else {//it searches the name that user entered
             
             
             
@@ -352,14 +349,14 @@ extension SearchTableViewController: UISearchBarDelegate{
         
     }
     
-    
+    //MARK: Search Text Did Change
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText.count == 0 {
             self.fixSuggestions()
         }else if  searchText.count != 0{
             
-            let key = searchText
+            let key = searchText //filter the strings in search history that has the key(text that user entered now)
             let filteredStrings = self.itemArray.filter({(item: QueryItems) -> Bool in
                 
                 let stringMatch = item.text.lowercased().range(of: key.lowercased())
@@ -372,19 +369,31 @@ extension SearchTableViewController: UISearchBarDelegate{
         }
     }
     
+    
+    //MARK: Cancel Button Clicked
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        //When we click on cancel button then
+        searchBar.showsCancelButton = false // cancell button will hide
         
-        searchBar.showsCancelButton = false
+        self.queriesArray = self.itemArray //suggestions will be reset to 10 last search
         
-        self.queriesArray = self.itemArray
-        
-        searchBar.text = ""
+        searchBar.text = "" //empty serach bar textfield
         
         self.fixSuggestions()
         
         DispatchQueue.main.async {
-            searchBar.resignFirstResponder()
+            searchBar.resignFirstResponder() //hide keyboard
         }
     }
     
+}
+
+
+//MARK: Encode Text
+extension String {
+    func encodeURIComponent() -> String? {
+        var characterSet = CharacterSet.alphanumerics
+        characterSet.insert(charactersIn: "-_.!~*'()")
+        return self.addingPercentEncoding(withAllowedCharacters: characterSet)
+    }
 }
