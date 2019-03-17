@@ -101,21 +101,10 @@ class MovieListTableViewController: UITableViewController {
         }
     }
     
-    //    override func viewDidDisappear(_ animated: Bool){
-    //        self.array = []
-    //        tableView.reloadData()
-    //        let encoder = PropertyListEncoder()
-    //        do {
-    //            let data = try encoder.encode(self.array)
-    //            try data.write(to: self.dtatFilePath!)
-    //        } catch {
-    //            print("Error Encoding itemArray, \(error)")
-    //        }
-    //    }
     
-    
-    
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+    }
     
 }
 
