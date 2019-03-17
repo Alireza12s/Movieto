@@ -75,6 +75,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="dJm-Wn-8Zx"/>
                     <connections>
+                        <outlet property="searchBar" destination="AEX-Mh-Y4g" id="qt0-1h-IS4"/>
                         <segue destination="x6V-Go-LKY" kind="show" identifier="SearchSegue" id="cbu-iu-Ddj"/>
                     </connections>
                 </tableViewController>

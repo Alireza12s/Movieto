@@ -1,10 +1,12 @@
 import Alamofire
 import UIKit
 import SwiftyJSON
+import Network
 
 
 class SearchTableViewController: UITableViewController{
     
+    @IBOutlet var searchBar: UISearchBar!
     
     var itemArray = [QueryItems]()
     var queriesArray = [QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems(),QueryItems()]
@@ -23,20 +25,25 @@ class SearchTableViewController: UITableViewController{
     
     
     
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        loadItems()
         tableView.delegate = self
         tableView.dataSource = self
-        
-       f()
+
+        tableView.tableFooterView = UIView()
+
+        fixSuggestions()
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         resultArray = []
         saveResult()
+        checkNtework()
+        self.tableView.reloadData()
     }
     
     //MARK: Tableview Datasource Methods
@@ -45,6 +52,7 @@ class SearchTableViewController: UITableViewController{
             return 10
         } else {
             return queriesArray.count
+            print(queriesArray.count)
         }
     }
     
@@ -90,6 +98,7 @@ class SearchTableViewController: UITableViewController{
     
     //MARK: Get Movie Data
     func getMovieData(name: String){
+        self.movie = name
         let formattedName = String(name.replacingOccurrences(of: " ", with: "%20"))
         
         let url: String = makeURL(MovieName: formattedName)
@@ -126,37 +135,57 @@ class SearchTableViewController: UITableViewController{
         
         
     }
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - JSON Parsing
+    /***************************************************************/
+    
+    
+    //We parse our Recieved Json here and save results
+    func updateMovieData(json: JSON){
         
-        
-        
-        
-        
-        
-        
-        //MARK: - JSON Parsing
-        /***************************************************************/
-        
-        
-        //We parse our Recieved Json here and save results
-        func updateMovieData(json: JSON){
+        let numberOfResults = json["results"].count
+        if numberOfResults  == 0 {
             
-           let numberOfResults = json["results"].count
-                for i in 0 ..< numberOfResults{
-                let resultItem = ResultItems()
+            let alert = UIAlertController(title: "No Movie Found", message: "No Results Found For \" \(movie) \" ", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "OK", style: .default){ (_) in
                 
-                resultItem.fullOverview = json["results"][i]["overview"].stringValue
+                self.searchBar.text = ""
                 
-                resultItem.movieName = json["results"][i]["title"].stringValue
+                self.searchBar.endEditing(true)
                 
-                resultItem.posterPath = json["results"][i]["poster_path"].stringValue
+                self.searchBar.showsCancelButton = false
                 
-                resultItem.releaseDate = json["results"][i]["release_date"].stringValue
-                
-                resultArray.append(resultItem)
+                self.fixSuggestions()
             }
-            saveResult()
-            performSegue(withIdentifier: "SearchSegue", sender: nil)
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true, completion: nil)
+        } else {
+        for i in 0 ..< numberOfResults{
+            let resultItem = ResultItems()
+            
+            resultItem.fullOverview = json["results"][i]["overview"].stringValue
+            
+            resultItem.movieName = json["results"][i]["title"].stringValue
+            
+            resultItem.posterPath = json["results"][i]["poster_path"].stringValue
+            
+            resultItem.releaseDate = json["results"][i]["release_date"].stringValue
+            
+            resultArray.append(resultItem)
         }
+        saveResult()
+        performSegue(withIdentifier: "SearchSegue", sender: nil)
+        }
+    }
     
     
     //MARK: Save Search Result
@@ -179,49 +208,100 @@ class SearchTableViewController: UITableViewController{
             vC.dtatFilePath = dataFilePath2
         }
     }
-
+    
+    
+    //MARK: Model Manupulation Method
+    
+    
+    func saveItems(){
+        itemArray = Array(Set<QueryItems>(itemArray))
         
-        //MARK: Model Manupulation Method
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error Encoding itemArray, \(error)")
+        }
         
+        tableView.reloadData()
         
-        func saveItems(){
-            itemArray = Array(Set<QueryItems>(itemArray))
-            
-            let encoder = PropertyListEncoder()
+    }
+    
+    func loadItems(){
+        
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
             do {
-                let data = try encoder.encode(itemArray)
-                try data.write(to: dataFilePath!)
+                itemArray = try decoder.decode([QueryItems].self, from: data)
             } catch {
-                print("Error Encoding itemArray, \(error)")
+                print("Error decoding item array,\(error)")
             }
-            
-            tableView.reloadData()
             
         }
         
-        func loadItems(){
+        self.tableView.reloadData()
+    }
+    
+    func fixSuggestions(){
+        loadItems()
+        if itemArray.count > 9{
+            self.queriesArray = Array(self.itemArray.suffix(from: self.itemArray.count - 10))
+        }
+//         else {
+//            for i in 0..<self.queriesArray.count{
+//                self.queriesArray.append(self.itemArray[self.itemArray.count - 1 - i])
+//            }
+//        }
+        self.tableView.reloadData()
+    }
+    
+    
+    func checkNtework(){
+        
+        if #available(iOS 12.0, *) {
+            let monitor = NWPathMonitor()
             
-            if let data = try? Data(contentsOf: dataFilePath!){
-                let decoder = PropertyListDecoder()
-                do {
-                    itemArray = try decoder.decode([QueryItems].self, from: data)
-                } catch {
-                    print("Error decoding item array,\(error)")
+            monitor.pathUpdateHandler = { (path) in
+                
+                if path.status == .satisfied {
+                    
+                    print("We're connected!")
+                    
+                } else {
+                    
+                    print("No connection.")
+                    let alert = UIAlertController(title: "Check Your Connection", message: "You're Not Connected To The Internet", preferredStyle: .alert)
+                    
+                    let action = UIAlertAction(title: "OK", style: .default){(action) in
+                        
+                        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                            return
+                        }
+                        
+                        if UIApplication.shared.canOpenURL(settingsUrl) {
+                            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                                // Checking for setting is opened or not
+                                print("Setting is opened: \(success)")
+                            })
+                        }
+                        
+                    }
+                    
+                    alert.addAction(action)
+                    
+                    self.present(alert, animated: true, completion: nil)
+                    
                 }
                 
             }
             
-            self.tableView.reloadData()
+            let queue = DispatchQueue(label: "Monitor")
+            
+            monitor.start(queue: queue)
         }
-        
-    func f(){
-        loadItems()
-        if itemArray.count > 9{
-        self.queriesArray = Array(itemArray.suffix(from: itemArray.count - 10))
-        }
-        self.tableView.reloadData()
     }
-        
+    
     
     
 }
@@ -234,7 +314,7 @@ extension SearchTableViewController: UISearchBarDelegate{
     
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        self.f()
+        self.fixSuggestions()
         searchBar.showsCancelButton = true
         
     }
@@ -252,16 +332,16 @@ extension SearchTableViewController: UISearchBarDelegate{
             
             self.present(emptyNameAlert, animated: true, completion: nil)
         } else {
-        
             
             
-        DispatchQueue.main.async {
             
-            self.movie = searchBar.text!
-            
-            self.getMovieData(name: self.movie)
-            
-        }
+            DispatchQueue.main.async {
+                
+                self.movie = searchBar.text!
+                
+                self.getMovieData(name: self.movie)
+                
+            }
             
         }
         
@@ -272,7 +352,7 @@ extension SearchTableViewController: UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText.count == 0 {
-            self.f()
+            self.fixSuggestions()
         }else if  searchText.count != 0{
             
             let key = searchText
@@ -296,7 +376,7 @@ extension SearchTableViewController: UISearchBarDelegate{
         
         searchBar.text = ""
         
-        self.f()
+        self.fixSuggestions()
         
         DispatchQueue.main.async {
             searchBar.resignFirstResponder()

@@ -1,6 +1,5 @@
 import Alamofire
 import UIKit
-import RxAlamofire
 
 
 
@@ -43,7 +42,7 @@ class MovieListTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return array.count
+        return 2 * array.count
         
     }
     
@@ -67,16 +66,21 @@ class MovieListTableViewController: UITableViewController {
             
             cell.dateLabel.text = self.array[index].releaseDate
             
-            let imagePath = array[indexPath.row].posterPath
+            do {
+            
+            let imagePath = array[index].posterPath
             
             let url = movieURL + imagePath
             Alamofire.request(url, method: .get)
                 .validate()
                 .responseData(completionHandler: { (responseData) in
                     
-                    cell.posterImage.image = UIImage(data: responseData.data!)
+                   try!  cell.posterImage.image = UIImage(data: responseData.data!)
                     print("Image downloaded")
                 })
+            } catch {
+                print("No Image To Download")
+            }
             
             
             return cell
