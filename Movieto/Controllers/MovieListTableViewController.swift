@@ -8,13 +8,15 @@ class MovieListTableViewController: UITableViewController {
     var array = [ResultItems]()
     var dtatFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Result.plist")
     
-    let movieURL = "http://image.tmdb.org/t/p/w92/"
+    let movieURL = "http://image.tmdb.org/t/p/w92"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         loadResult()
+        
+        
         
         
         tableView.tableFooterView = UIView()//delete the empty rows in tableview
@@ -74,18 +76,11 @@ class MovieListTableViewController: UITableViewController {
             cell.dateLabel.text = self.array[index].releaseDate
             
             //get image from path if there is a path
-            if let imagePath = array[index].posterPath {
+
             
-                let url = movieURL + imagePath
-            Alamofire.request(url, method: .get)
-                .validate()
-                .responseData(completionHandler: { (responseData) in
+                let url = movieURL + array[index].posterPath
+            cell.posterImage.load(url: URL(string: url)!)
                     
-                    cell.posterImage.image = UIImage(data: responseData.data!)
-                    print("Image downloaded")
-                })
-            }
-            
             
             return cell
             
@@ -102,7 +97,6 @@ class MovieListTableViewController: UITableViewController {
             cell.textLabel?.text = array[index].fullOverview
             
             cell.textLabel?.textColor = .white
-            cell.textLabel?.backgroundColor = UIColor(red:0.14, green:0.48, blue:0.63, alpha:1.0)
             cell.backgroundColor = UIColor(red:0.14, green:0.48, blue:0.63, alpha:1.0)
             
             return cell
@@ -114,6 +108,21 @@ class MovieListTableViewController: UITableViewController {
         tableView.cellForRow(at: indexPath)?.isSelected = false
     }
     
+
 }
 
 
+
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
+    }
+}

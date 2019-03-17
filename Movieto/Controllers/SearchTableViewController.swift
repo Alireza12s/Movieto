@@ -69,6 +69,21 @@ class SearchTableViewController: UITableViewController{
         return cell;
     }
     
+    //MARK: Delete Rows
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            self.itemArray.remove(at: indexPath.row)
+//            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            saveItems()
+            fixSuggestions()
+            self.tableView.reloadData()
+        }
+    }
+    
     
     //MARK: TableView Delegate Mothods
     

@@ -5,7 +5,7 @@ class ResultItems:Codable {
     
     
     
-    var posterPath: String? = nil
+    var posterPath: String = ""
     
     var movieName: String = ""
     

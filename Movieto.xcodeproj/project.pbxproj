@@ -22,6 +22,7 @@
 		F570BA32223C0D6A00A278E4 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA30223C0D6A00A278E4 /* CustomTableViewCell.swift */; };
 		F570BA33223C0D6A00A278E4 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F570BA31223C0D6A00A278E4 /* CustomTableViewCell.xib */; };
 		F570BA35223C0FDF00A278E4 /* MovieListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F570BA34223C0FDF00A278E4 /* MovieListTableViewController.swift */; };
+		F5A952CC223E65ED00871E9C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5A952CB223E65ED00871E9C /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		F570BA30223C0D6A00A278E4 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F570BA31223C0D6A00A278E4 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		F570BA34223C0FDF00A278E4 /* MovieListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListTableViewController.swift; sourceTree = "<group>"; };
+		F5A952CB223E65ED00871E9C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F8A2241CDFABB860814635BB /* Pods-MovietoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovietoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovietoUITests/Pods-MovietoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,6 +127,7 @@
 		F5361A4A22381866008E5420 = {
 			isa = PBXGroup;
 			children = (
+				F5A952CB223E65ED00871E9C /* Default-568h@2x.png */,
 				F5361A5522381866008E5420 /* Movieto */,
 				F5361A6D22381868008E5420 /* MovietoTests */,
 				F5361A7822381868008E5420 /* MovietoUITests */,
@@ -331,6 +334,7 @@
 				F5361A6422381868008E5420 /* LaunchScreen.storyboard in Resources */,
 				F5361A6122381868008E5420 /* Assets.xcassets in Resources */,
 				F570BA33223C0D6A00A278E4 /* CustomTableViewCell.xib in Resources */,
+				F5A952CC223E65ED00871E9C /* Default-568h@2x.png in Resources */,
 				F5361A5C22381867008E5420 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,6 +432,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Movieto/Pods-Movieto-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -435,6 +440,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
